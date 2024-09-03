@@ -33,7 +33,8 @@ class SharedPreferencesWorkoutsRepository implements WorkoutsRepository {
   Future<Result<void>> addWorkout(Workout workout) async {
     try {
       final workoutsJson = await _fetchWorkouts();
-      workoutsJson[workout.id] = _workoutToJson(workout);
+      final newId = _generateId(workoutsJson.keys);
+      workoutsJson[newId] = _workoutToJson(workout)..['id'] = newId;
       await _sharedPreferences.setString(
           _workoutsKey, jsonEncode(workoutsJson));
       return Success(null);
@@ -66,6 +67,14 @@ class SharedPreferencesWorkoutsRepository implements WorkoutsRepository {
     } on Exception catch (e) {
       return Failure(error: e);
     }
+  }
+
+  String _generateId(Iterable<String> existingIds) {
+    final id = DateTime.now().millisecondsSinceEpoch.toString();
+    if (existingIds.contains(id)) {
+      return _generateId(existingIds);
+    }
+    return id;
   }
 
   Future<Map<String, dynamic>> _fetchWorkouts() async {

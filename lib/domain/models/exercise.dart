@@ -1,6 +1,11 @@
-class Exercise {
-  const Exercise({required this.id, required this.name});
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  final String id;
-  final String name;
+part 'exercise.freezed.dart';
+
+@freezed
+class Exercise with _$Exercise {
+  const factory Exercise({
+    required String id,
+    required String name,
+  }) = _Exercise;
 }
