@@ -69,4 +69,13 @@ class MyWorkoutsCubit extends Cubit<MyWorkoutsViewState> {
       _loadWorkouts();
     }
   }
+
+  Future<void> onDeleteWorkout(Workout workout) async {
+    final result = await _repository.deleteWorkout(workout.id);
+    if (result is Failure) {
+      await _navigator.showErrorMessage(result.error.toString());
+    } else {
+      _loadWorkouts();
+    }
+  }
 }
