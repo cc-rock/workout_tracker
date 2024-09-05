@@ -11,7 +11,9 @@ const _workoutsKey = 'workouts';
 
 class SharedPreferencesWorkoutsRepository implements WorkoutsRepository {
   SharedPreferencesWorkoutsRepository(
-      this._sharedPreferences, this._exercisesRepository);
+    this._sharedPreferences,
+    this._exercisesRepository,
+  );
 
   final SharedPreferencesAsync _sharedPreferences;
   final ExercisesRepository _exercisesRepository;
@@ -24,9 +26,7 @@ class SharedPreferencesWorkoutsRepository implements WorkoutsRepository {
     }
     final exercises = (exercisesResult as Success<List<Exercise>>).data;
     final workoutsJson = await _fetchWorkouts();
-    return Success(workoutsJson.values
-        .map((workoutJson) => _workoutFromJson(workoutJson, exercises))
-        .toList());
+    return Success(workoutsJson.values.map((workoutJson) => _workoutFromJson(workoutJson, exercises)).toList());
   }
 
   @override
@@ -35,8 +35,7 @@ class SharedPreferencesWorkoutsRepository implements WorkoutsRepository {
       final workoutsJson = await _fetchWorkouts();
       final newId = _generateId(workoutsJson.keys);
       workoutsJson[newId] = _workoutToJson(workout)..['id'] = newId;
-      await _sharedPreferences.setString(
-          _workoutsKey, jsonEncode(workoutsJson));
+      await _sharedPreferences.setString(_workoutsKey, jsonEncode(workoutsJson));
       return Success(null);
     } on Exception catch (e) {
       return Failure(error: e);
@@ -48,8 +47,7 @@ class SharedPreferencesWorkoutsRepository implements WorkoutsRepository {
     try {
       final workoutsJson = await _fetchWorkouts();
       workoutsJson.remove(id);
-      await _sharedPreferences.setString(
-          _workoutsKey, jsonEncode(workoutsJson));
+      await _sharedPreferences.setString(_workoutsKey, jsonEncode(workoutsJson));
       return Success(null);
     } on Exception catch (e) {
       return Failure(error: e);
@@ -61,8 +59,7 @@ class SharedPreferencesWorkoutsRepository implements WorkoutsRepository {
     try {
       final workoutsJson = await _fetchWorkouts();
       workoutsJson[workout.id] = _workoutToJson(workout);
-      await _sharedPreferences.setString(
-          _workoutsKey, jsonEncode(workoutsJson));
+      await _sharedPreferences.setString(_workoutsKey, jsonEncode(workoutsJson));
       return Success(null);
     } on Exception catch (e) {
       return Failure(error: e);
@@ -96,14 +93,12 @@ class SharedPreferencesWorkoutsRepository implements WorkoutsRepository {
     };
   }
 
-  Workout _workoutFromJson(
-      Map<String, dynamic> json, List<Exercise> exercises) {
+  Workout _workoutFromJson(Map<String, dynamic> json, List<Exercise> exercises) {
     return Workout(
       id: json['id'],
       name: json['name'],
       sets: (json['sets'] as List).map((setJson) {
-        final exercise = exercises
-            .firstWhere((exercise) => exercise.id == setJson['exerciseId']);
+        final exercise = exercises.firstWhere((exercise) => exercise.id == setJson['exerciseId']);
         return Set(
           exercise: exercise,
           repetitions: setJson['repetitions'],

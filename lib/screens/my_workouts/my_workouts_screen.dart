@@ -5,7 +5,11 @@ import 'package:workout_tracker/domain/models/workout.dart';
 import 'package:workout_tracker/screens/my_workouts/my_workouts_cubit.dart';
 import 'package:workout_tracker/screens/my_workouts/widgets/workout_list_tile.dart';
 import 'package:workout_tracker/screens/workout_details/workout_details_screen.dart';
+import 'package:workout_tracker/utils/widgets/buttons.dart';
+import 'package:workout_tracker/utils/widgets/dialogs.dart';
+import 'package:workout_tracker/utils/widgets/loading_overlay.dart';
 import 'package:workout_tracker/utils/widgets/screen_container.dart';
+import 'package:workout_tracker/utils/widgets/spacers.dart';
 
 class MyWorkoutsScreen extends StatelessWidget {
   const MyWorkoutsScreen({super.key});
@@ -13,8 +17,7 @@ class MyWorkoutsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          getIt<MyWorkoutsCubit>(param1: _MyWorkoutsNavigatorImpl(context)),
+      create: (context) => getIt<MyWorkoutsCubit>(param1: _MyWorkoutsNavigatorImpl(context)),
       child: BlocBuilder<MyWorkoutsCubit, MyWorkoutsViewState>(
         builder: (context, state) {
           return Scaffold(
@@ -22,30 +25,36 @@ class MyWorkoutsScreen extends StatelessWidget {
               title: const Text('My Workouts'),
               backgroundColor: Theme.of(context).colorScheme.inversePrimary,
             ),
-            body: state.isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : ScreenContainer(
-                  child: ListView.builder(
-                      itemCount: state.workouts.length,
-                      itemBuilder: (context, index) {
-                        final workout = state.workouts[index];
-                        return WorkoutListTile(
-                          workout: workout,
-                          onTap: () => context
-                              .read<MyWorkoutsCubit>()
-                              .onWorkoutSelected(workout),
-                          onDeleteTapped: () => context
-                              .read<MyWorkoutsCubit>()
-                              .onDeleteWorkout(workout),
-                        );
-                      },
-                    ),
+            body: Stack(
+              children: [
+                ScreenContainer(
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: state.workouts.length,
+                          itemBuilder: (context, index) {
+                            final workout = state.workouts[index];
+                            return WorkoutListTile(
+                              workout: workout,
+                              onTap: () => context.read<MyWorkoutsCubit>().onWorkoutSelected(workout),
+                              onDeleteTapped: () => context.read<MyWorkoutsCubit>().onDeleteWorkout(workout),
+                            );
+                          },
+                        ),
+                      ),
+                      verticalSpacer,
+                      ExpandedRoundButton(
+                        label: 'Add workout',
+                        onPressed: () => context.read<MyWorkoutsCubit>().onAddWorkout(),
+                      ),
+                      bottomScreenSpacer,
+                    ],
+                  ),
                 ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () => context.read<MyWorkoutsCubit>().onAddWorkout(),
-              child: const Icon(Icons.add),
+                LoadingOverlay(isLoading: state.isLoading),
+              ],
             ),
-            floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
           );
         },
       ),
@@ -59,42 +68,11 @@ class _MyWorkoutsNavigatorImpl implements MyWorkoutsNavigator {
   final BuildContext _context;
 
   @override
-  Future<void> showErrorMessage(String message) async {
-    await showDialog(
-      context: _context,
-      builder: (context) => AlertDialog(
-        title: const Text('Error'),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
-  }
+  Future<void> showErrorMessage(String message) => _context.showErrorDialog(message);
 
   @override
-  Future<bool> showConfirmationMessage(
-      {required String title, required String message}) async {
-    final result = await showDialog<bool>(
-      context: _context,
-      builder: (context) => AlertDialog(
-        title: Text(title),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('OK'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('CANCEL'),
-          ),
-        ],
-      ),
-    );
+  Future<bool> showConfirmationMessage({required String title, required String message}) async {
+    final result = await _context.showConfirmationDialog(title: title, message: message);
     return result ?? false;
   }
 

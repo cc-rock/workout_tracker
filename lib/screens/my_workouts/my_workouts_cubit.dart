@@ -18,8 +18,10 @@ abstract class MyWorkoutsNavigator {
   Future<void> showErrorMessage(String message);
 
   /// Returns true if the user has confirmed the action
-  Future<bool> showConfirmationMessage(
-      {required String title, required String message});
+  Future<bool> showConfirmationMessage({
+    required String title,
+    required String message,
+  });
 
   /// Returns true if the workouts need to be reloaded when returning
   Future<bool> goToWorkoutDetails(Workout workout);
@@ -29,8 +31,7 @@ abstract class MyWorkoutsNavigator {
 }
 
 class MyWorkoutsCubit extends Cubit<MyWorkoutsViewState> {
-  MyWorkoutsCubit(this._repository, this._navigator)
-      : super(const MyWorkoutsViewState()) {
+  MyWorkoutsCubit(this._repository, this._navigator) : super(const MyWorkoutsViewState()) {
     _loadWorkouts();
   }
 

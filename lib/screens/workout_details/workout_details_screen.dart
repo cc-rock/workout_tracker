@@ -5,6 +5,8 @@ import 'package:workout_tracker/domain/models/workout.dart';
 import 'package:workout_tracker/screens/workout_details/widgets/editable_workout_details.dart';
 import 'package:workout_tracker/screens/workout_details/widgets/readonly_workout_details.dart';
 import 'package:workout_tracker/screens/workout_details/workout_details_cubit.dart';
+import 'package:workout_tracker/utils/widgets/dialogs.dart';
+import 'package:workout_tracker/utils/widgets/loading_overlay.dart';
 import 'package:workout_tracker/utils/widgets/screen_container.dart';
 
 class WorkoutDetailsScreen extends StatelessWidget {
@@ -50,13 +52,16 @@ class WorkoutDetailsScreen extends StatelessWidget {
               title: Text(title),
               backgroundColor: Theme.of(context).colorScheme.inversePrimary,
             ),
-            body: state.isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : ScreenContainer(
+            body: Stack(
+              children: [
+                ScreenContainer(
                     child: state.viewMode == ViewMode.viewing
                         ? ReadOnlyWorkoutDetails(workout: state.workout)
                         : EditableWorkoutDetails(workout: state.workout, availableExercises: state.availableExercises),
                   ),
+                LoadingOverlay(isLoading: state.isLoading), 
+              ],
+            ),
           );
         },
       ),
@@ -70,21 +75,7 @@ class _WorkoutDetailsNavigatorImpl implements WorkoutDetailsNavigator {
   final BuildContext _context;
 
   @override
-  Future<void> showErrorMessage(String message) async {
-    await showDialog(
-      context: _context,
-      builder: (context) => AlertDialog(
-        title: const Text('Error'),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
-  }
+  Future<void> showErrorMessage(String message) => _context.showErrorDialog(message);
 
   @override
   void closeScreen(bool shouldReloadWorkouts) {
