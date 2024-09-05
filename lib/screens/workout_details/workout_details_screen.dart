@@ -5,6 +5,7 @@ import 'package:workout_tracker/domain/models/workout.dart';
 import 'package:workout_tracker/screens/workout_details/widgets/editable_workout_details.dart';
 import 'package:workout_tracker/screens/workout_details/widgets/readonly_workout_details.dart';
 import 'package:workout_tracker/screens/workout_details/workout_details_cubit.dart';
+import 'package:workout_tracker/utils/widgets/screen_container.dart';
 
 class WorkoutDetailsScreen extends StatelessWidget {
   const WorkoutDetailsScreen._({
@@ -47,28 +48,15 @@ class WorkoutDetailsScreen extends StatelessWidget {
           return Scaffold(
             appBar: AppBar(
               title: Text(title),
-              actions: [
-                if (state.viewMode != ViewMode.viewing)
-                  IconButton(
-                    icon: const Icon(Icons.save),
-                    onPressed: () => context.read<WorkoutDetailsCubit>().onSave(),
-                  )
-                else
-                  IconButton(
-                    icon: const Icon(Icons.edit),
-                    onPressed: () => context.read<WorkoutDetailsCubit>().onEditWorkout(),
-                  ),  
-              ],
+              backgroundColor: Theme.of(context).colorScheme.inversePrimary,
             ),
             body: state.isLoading
                 ? const Center(child: CircularProgressIndicator())
-                : state.viewMode == ViewMode.viewing
-                    ? ReadOnlyWorkoutDetails(workout: state.workout)
-                    : EditableWorkoutDetails(workout: state.workout, availableExercises: state.availableExercises),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () => context.read<WorkoutDetailsCubit>().onAddSet(),
-              child: const Icon(Icons.add),
-            ),
+                : ScreenContainer(
+                    child: state.viewMode == ViewMode.viewing
+                        ? ReadOnlyWorkoutDetails(workout: state.workout)
+                        : EditableWorkoutDetails(workout: state.workout, availableExercises: state.availableExercises),
+                  ),
           );
         },
       ),

@@ -9,7 +9,8 @@ class WorkoutTrackerApp extends StatelessWidget {
     return MaterialApp(
       title: 'Workout Tracker',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
       ),
       home: const MyWorkoutsScreen(),
     );

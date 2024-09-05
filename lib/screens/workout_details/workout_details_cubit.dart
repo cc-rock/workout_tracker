@@ -60,7 +60,8 @@ class WorkoutDetailsCubit extends Cubit<WorkoutDetailsViewState> {
     }
   }
 
-  void onEditWorkout() {
+  Future<void> onEditWorkout() async {
+    await _loadExercises();
     emit(state.copyWith(viewMode: ViewMode.editing));
   }
 
@@ -104,13 +105,17 @@ class WorkoutDetailsCubit extends Cubit<WorkoutDetailsViewState> {
     final result = state.viewMode == ViewMode.adding
         ? await _workoutsRepository.addWorkout(workout)
         : await _workoutsRepository.updateWorkout(workout);
+    emit(state.copyWith(isLoading: false));    
     switch (result) {
       case Failure(error: final error):
-        emit(state.copyWith(isLoading: false));
         _navigator.showErrorMessage(error.toString());
         break;
       case Success():
-        _navigator.closeScreen(true);
+        if (state.viewMode == ViewMode.adding) {
+          _navigator.closeScreen(true);
+        } else {
+          emit(state.copyWith(viewMode: ViewMode.viewing));
+        }
         break;
     }
   }
