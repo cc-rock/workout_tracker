@@ -19,6 +19,7 @@ class WorkoutDetailsViewState with _$WorkoutDetailsViewState {
   const factory WorkoutDetailsViewState({
     required Workout workout,
     @Default(false) bool isLoading,
+    @Default(false) bool isModified,
     @Default(ViewMode.viewing) ViewMode viewMode,
     @Default([]) List<Exercise> availableExercises,
   }) = _WorkoutDetailsViewState;
@@ -60,19 +61,18 @@ class WorkoutDetailsCubit extends Cubit<WorkoutDetailsViewState> {
     }
   }
 
-  Future<void> onEditWorkout() async {
+  Future<void> onEditWorkoutPressed() async {
     await _loadExercises();
     emit(state.copyWith(viewMode: ViewMode.editing));
   }
 
-  void onAddSet() {
+  void onAddSetPressed() {
     final newSets = List.of(state.workout.sets)
-      ..add(Set(
-          repetitions: 0, weight: 0, exercise: state.availableExercises.first));
+      ..add(Set(repetitions: 0, weight: 0, exercise: state.availableExercises.first));
     emit(state.copyWith(workout: state.workout.copyWith(sets: newSets)));
   }
 
-  void onRemoveSet(int index) {
+  void onDeleteSetPressed(int index) {
     final newSets = List.of(state.workout.sets)..removeAt(index);
     emit(state.copyWith(workout: state.workout.copyWith(sets: newSets)));
   }
@@ -99,13 +99,13 @@ class WorkoutDetailsCubit extends Cubit<WorkoutDetailsViewState> {
     emit(state.copyWith(workout: state.workout.copyWith(name: name)));
   }
 
-  void onSave() async {
+  void onSavePressed() async {
     emit(state.copyWith(isLoading: true));
     final workout = state.workout;
     final result = state.viewMode == ViewMode.adding
         ? await _workoutsRepository.addWorkout(workout)
         : await _workoutsRepository.updateWorkout(workout);
-    emit(state.copyWith(isLoading: false));    
+    emit(state.copyWith(isLoading: false, isModified: true));
     switch (result) {
       case Failure(error: final error):
         _navigator.showErrorMessage(error.toString());
@@ -121,6 +121,6 @@ class WorkoutDetailsCubit extends Cubit<WorkoutDetailsViewState> {
   }
 
   void onBackPressed() {
-    _navigator.closeScreen(false);
+    _navigator.closeScreen(state.isModified);
   }
 }

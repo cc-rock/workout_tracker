@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workout_tracker/domain/models/exercise.dart';
 import 'package:workout_tracker/domain/models/workout.dart';
@@ -19,7 +20,7 @@ class EditableWorkoutSet extends StatelessWidget {
         IconButton(
           icon: const Icon(Icons.delete),
           onPressed: () {
-            context.read<WorkoutDetailsCubit>().onRemoveSet(index);
+            context.read<WorkoutDetailsCubit>().onDeleteSetPressed(index);
           },
         ),
         Expanded(
@@ -46,6 +47,9 @@ class EditableWorkoutSet extends StatelessWidget {
             children: [
               Expanded(
                 child: TextFormField(
+                  textAlign: TextAlign.end,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   initialValue: set.repetitions.toString(),
                   onChanged: (value) =>
                       context.read<WorkoutDetailsCubit>().onSetRepetitionsChanged(index, int.tryParse(value) ?? 0),
@@ -63,6 +67,9 @@ class EditableWorkoutSet extends StatelessWidget {
             children: [
               Expanded(
                 child: TextFormField(
+                  textAlign: TextAlign.end,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   initialValue: set.weight.toString(),
                   onChanged: (value) =>
                       context.read<WorkoutDetailsCubit>().onSetWeightChanged(index, int.tryParse(value) ?? 0),

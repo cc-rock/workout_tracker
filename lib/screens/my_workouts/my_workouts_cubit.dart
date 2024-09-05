@@ -31,14 +31,12 @@ abstract class MyWorkoutsNavigator {
 }
 
 class MyWorkoutsCubit extends Cubit<MyWorkoutsViewState> {
-  MyWorkoutsCubit(this._repository, this._navigator) : super(const MyWorkoutsViewState()) {
-    _loadWorkouts();
-  }
+  MyWorkoutsCubit(this._repository, this._navigator) : super(const MyWorkoutsViewState());
 
   final WorkoutsRepository _repository;
   final MyWorkoutsNavigator _navigator;
 
-  Future<void> _loadWorkouts() async {
+  Future<void> loadWorkouts() async {
     emit(state.copyWith(isLoading: true));
     final workoutsResult = await _repository.getWorkouts();
     switch (workoutsResult) {
@@ -55,18 +53,18 @@ class MyWorkoutsCubit extends Cubit<MyWorkoutsViewState> {
   Future<void> onWorkoutSelected(Workout workout) async {
     final shouldReload = await _navigator.goToWorkoutDetails(workout);
     if (shouldReload) {
-      _loadWorkouts();
+      loadWorkouts();
     }
   }
 
-  Future<void> onAddWorkout() async {
+  Future<void> onAddWorkoutPressed() async {
     final shouldReload = await _navigator.goToAddWorkout();
     if (shouldReload) {
-      _loadWorkouts();
+      loadWorkouts();
     }
   }
 
-  Future<void> onDeleteWorkout(Workout workout) async {
+  Future<void> onDeleteWorkoutPressed(Workout workout) async {
     final confirmed = await _navigator.showConfirmationMessage(
       title: 'Confirmation',
       message: 'Delete workout ${workout.name}?',
@@ -78,7 +76,7 @@ class MyWorkoutsCubit extends Cubit<MyWorkoutsViewState> {
     if (result is Failure) {
       await _navigator.showErrorMessage(result.error.toString());
     } else {
-      _loadWorkouts();
+      loadWorkouts();
     }
   }
 }

@@ -17,7 +17,7 @@ class MyWorkoutsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<MyWorkoutsCubit>(param1: _MyWorkoutsNavigatorImpl(context)),
+      create: (context) => getIt<MyWorkoutsCubit>(param1: _MyWorkoutsNavigatorImpl(context))..loadWorkouts(),
       child: BlocBuilder<MyWorkoutsCubit, MyWorkoutsViewState>(
         builder: (context, state) {
           return Scaffold(
@@ -38,7 +38,7 @@ class MyWorkoutsScreen extends StatelessWidget {
                             return WorkoutListTile(
                               workout: workout,
                               onTap: () => context.read<MyWorkoutsCubit>().onWorkoutSelected(workout),
-                              onDeleteTapped: () => context.read<MyWorkoutsCubit>().onDeleteWorkout(workout),
+                              onDeleteTapped: () => context.read<MyWorkoutsCubit>().onDeleteWorkoutPressed(workout),
                             );
                           },
                         ),
@@ -46,7 +46,7 @@ class MyWorkoutsScreen extends StatelessWidget {
                       verticalSpacer,
                       ExpandedRoundButton(
                         label: 'Add workout',
-                        onPressed: () => context.read<MyWorkoutsCubit>().onAddWorkout(),
+                        onPressed: () => context.read<MyWorkoutsCubit>().onAddWorkoutPressed(),
                       ),
                       bottomScreenSpacer,
                     ],

@@ -31,13 +31,13 @@ class ReadOnlyWorkoutDetails extends StatelessWidget {
           Expanded(
             child: SingleChildScrollView(
               child: Column(children: [
-                for (final set in workout.sets)
-                  ReadonlyWorkoutSet(set: set),
+                for (final set in workout.sets) ReadonlyWorkoutSet(set: set),
               ]),
             ),
           ),
           verticalSpacer,
-          ExpandedRoundButton(label: 'Edit', onPressed: () => context.read<WorkoutDetailsCubit>().onEditWorkout()),
+          ExpandedRoundButton(
+              label: 'Edit', onPressed: () => context.read<WorkoutDetailsCubit>().onEditWorkoutPressed()),
           bottomScreenSpacer,
         ],
       ),

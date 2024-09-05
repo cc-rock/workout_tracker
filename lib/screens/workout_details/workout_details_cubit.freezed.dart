@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$WorkoutDetailsViewState {
   Workout get workout => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
+  bool get isModified => throw _privateConstructorUsedError;
   ViewMode get viewMode => throw _privateConstructorUsedError;
   List<Exercise> get availableExercises => throw _privateConstructorUsedError;
 
@@ -35,6 +36,7 @@ abstract class $WorkoutDetailsViewStateCopyWith<$Res> {
   $Res call(
       {Workout workout,
       bool isLoading,
+      bool isModified,
       ViewMode viewMode,
       List<Exercise> availableExercises});
 
@@ -57,6 +59,7 @@ class _$WorkoutDetailsViewStateCopyWithImpl<$Res,
   $Res call({
     Object? workout = null,
     Object? isLoading = null,
+    Object? isModified = null,
     Object? viewMode = null,
     Object? availableExercises = null,
   }) {
@@ -68,6 +71,10 @@ class _$WorkoutDetailsViewStateCopyWithImpl<$Res,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isModified: null == isModified
+          ? _value.isModified
+          : isModified // ignore: cast_nullable_to_non_nullable
               as bool,
       viewMode: null == viewMode
           ? _value.viewMode
@@ -101,6 +108,7 @@ abstract class _$$WorkoutDetailsViewStateImplCopyWith<$Res>
   $Res call(
       {Workout workout,
       bool isLoading,
+      bool isModified,
       ViewMode viewMode,
       List<Exercise> availableExercises});
 
@@ -123,6 +131,7 @@ class __$$WorkoutDetailsViewStateImplCopyWithImpl<$Res>
   $Res call({
     Object? workout = null,
     Object? isLoading = null,
+    Object? isModified = null,
     Object? viewMode = null,
     Object? availableExercises = null,
   }) {
@@ -134,6 +143,10 @@ class __$$WorkoutDetailsViewStateImplCopyWithImpl<$Res>
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isModified: null == isModified
+          ? _value.isModified
+          : isModified // ignore: cast_nullable_to_non_nullable
               as bool,
       viewMode: null == viewMode
           ? _value.viewMode
@@ -153,6 +166,7 @@ class _$WorkoutDetailsViewStateImpl implements _WorkoutDetailsViewState {
   const _$WorkoutDetailsViewStateImpl(
       {required this.workout,
       this.isLoading = false,
+      this.isModified = false,
       this.viewMode = ViewMode.viewing,
       final List<Exercise> availableExercises = const []})
       : _availableExercises = availableExercises;
@@ -162,6 +176,9 @@ class _$WorkoutDetailsViewStateImpl implements _WorkoutDetailsViewState {
   @override
   @JsonKey()
   final bool isLoading;
+  @override
+  @JsonKey()
+  final bool isModified;
   @override
   @JsonKey()
   final ViewMode viewMode;
@@ -177,7 +194,7 @@ class _$WorkoutDetailsViewStateImpl implements _WorkoutDetailsViewState {
 
   @override
   String toString() {
-    return 'WorkoutDetailsViewState(workout: $workout, isLoading: $isLoading, viewMode: $viewMode, availableExercises: $availableExercises)';
+    return 'WorkoutDetailsViewState(workout: $workout, isLoading: $isLoading, isModified: $isModified, viewMode: $viewMode, availableExercises: $availableExercises)';
   }
 
   @override
@@ -188,6 +205,8 @@ class _$WorkoutDetailsViewStateImpl implements _WorkoutDetailsViewState {
             (identical(other.workout, workout) || other.workout == workout) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
+            (identical(other.isModified, isModified) ||
+                other.isModified == isModified) &&
             (identical(other.viewMode, viewMode) ||
                 other.viewMode == viewMode) &&
             const DeepCollectionEquality()
@@ -195,8 +214,8 @@ class _$WorkoutDetailsViewStateImpl implements _WorkoutDetailsViewState {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, workout, isLoading, viewMode,
-      const DeepCollectionEquality().hash(_availableExercises));
+  int get hashCode => Object.hash(runtimeType, workout, isLoading, isModified,
+      viewMode, const DeepCollectionEquality().hash(_availableExercises));
 
   @JsonKey(ignore: true)
   @override
@@ -210,6 +229,7 @@ abstract class _WorkoutDetailsViewState implements WorkoutDetailsViewState {
   const factory _WorkoutDetailsViewState(
       {required final Workout workout,
       final bool isLoading,
+      final bool isModified,
       final ViewMode viewMode,
       final List<Exercise> availableExercises}) = _$WorkoutDetailsViewStateImpl;
 
@@ -217,6 +237,8 @@ abstract class _WorkoutDetailsViewState implements WorkoutDetailsViewState {
   Workout get workout;
   @override
   bool get isLoading;
+  @override
+  bool get isModified;
   @override
   ViewMode get viewMode;
   @override

@@ -47,20 +47,28 @@ class WorkoutDetailsScreen extends StatelessWidget {
             ViewMode.editing => 'Edit workout',
             ViewMode.viewing => 'Workout details',
           };
-          return Scaffold(
-            appBar: AppBar(
-              title: Text(title),
-              backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-            ),
-            body: Stack(
-              children: [
-                ScreenContainer(
-                    child: state.viewMode == ViewMode.viewing
-                        ? ReadOnlyWorkoutDetails(workout: state.workout)
-                        : EditableWorkoutDetails(workout: state.workout, availableExercises: state.availableExercises),
-                  ),
-                LoadingOverlay(isLoading: state.isLoading), 
-              ],
+          return PopScope(
+            canPop: false,
+            onPopInvoked: (didPop) {
+              if (!didPop) {
+                context.read<WorkoutDetailsCubit>().onBackPressed();
+              }
+            },
+            child: Scaffold(
+              appBar: AppBar(
+                title: Text(title),
+                backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+              ),
+              body: Stack(
+                children: [
+                  ScreenContainer(
+                      child: state.viewMode == ViewMode.viewing
+                          ? ReadOnlyWorkoutDetails(workout: state.workout)
+                          : EditableWorkoutDetails(workout: state.workout, availableExercises: state.availableExercises),
+                    ),
+                  LoadingOverlay(isLoading: state.isLoading), 
+                ],
+              ),
             ),
           );
         },
