@@ -5,9 +5,11 @@ import 'package:workout_tracker/utils/result.dart';
 
 class HardcodedExercisesRepository implements ExercisesRepository {
   static const _exercises = [
-    Exercise(id: '1', name: 'Bench Press'),
-    Exercise(id: '2', name: 'Squat'),
-    Exercise(id: '3', name: 'Deadlift'),
+    Exercise(id: '1', name: 'Barbell row'),
+    Exercise(id: '2', name: 'Bench press'),
+    Exercise(id: '3', name: 'Shoulder press'),
+    Exercise(id: '4', name: 'Deadlift'),
+    Exercise(id: '5', name: 'Squat'),
   ];
 
   @override

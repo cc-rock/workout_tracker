@@ -26,11 +26,15 @@ class EditableWorkoutSet extends StatelessWidget {
         Expanded(
           flex: 5,
           child: DropdownButtonFormField<Exercise>(
+            isExpanded: true,
             value: set.exercise,
             items: availableExercises
                 .map((exercise) => DropdownMenuItem(
                       value: exercise,
-                      child: Text(exercise.name),
+                      child: Text(
+                        exercise.name,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ))
                 .toList(),
             onChanged: (value) {
