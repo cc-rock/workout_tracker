@@ -21,5 +21,4 @@ For the presentation layer, the BLOC library (and pattern) has been chosen, in p
 ## Possible improvements
 - Eliminate hard coded strings and implement proper localisation, for example using the flutter_localizations library
 - Implement the possibility of reordering sets when editing a workout
-- Implement a better navigation system, maybe by using
-- 
+- Write more tests - the included ones do not cover the entire app
