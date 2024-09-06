@@ -47,6 +47,7 @@ class EditableWorkoutSet extends StatelessWidget {
             children: [
               Expanded(
                 child: TextFormField(
+                  key: Key('repetitionsField$index'),
                   textAlign: TextAlign.end,
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -67,6 +68,7 @@ class EditableWorkoutSet extends StatelessWidget {
             children: [
               Expanded(
                 child: TextFormField(
+                  key: Key('weightField$index'),
                   textAlign: TextAlign.end,
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],

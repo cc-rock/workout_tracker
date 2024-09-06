@@ -22,7 +22,7 @@ class MyWorkoutsScreen extends StatelessWidget {
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(
-              title: const Text('My Workouts'),
+              title: const Text('My workouts'),
               backgroundColor: Theme.of(context).colorScheme.inversePrimary,
             ),
             body: Stack(

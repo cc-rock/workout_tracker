@@ -1,13 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:workout_tracker/domain/models/workout.dart';
-import 'package:workout_tracker/domain/repositories/workouts_repository.dart';
 import 'package:workout_tracker/screens/my_workouts/my_workouts_cubit.dart';
 import 'package:workout_tracker/utils/result.dart';
 
-class MockWorkoutsRepository extends Mock implements WorkoutsRepository {}
-
-class MockMyWorkoutsNavigator extends Mock implements MyWorkoutsNavigator {}
+import 'mocks.dart';
 
 const _workouts = [
   Workout(id: '1', name: 'Workout 1', sets: []),

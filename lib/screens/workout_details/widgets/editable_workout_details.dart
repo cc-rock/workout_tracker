@@ -24,6 +24,7 @@ class EditableWorkoutDetails extends StatelessWidget {
         children: [
           const Text('Name', style: fieldTitleStyle),
           TextFormField(
+            key: const Key('nameField'),
             initialValue: workout.name,
             style: const TextStyle(fontSize: 24),
             onChanged: (value) => context.read<WorkoutDetailsCubit>().onNameChanged(value),
