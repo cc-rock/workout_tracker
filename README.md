@@ -18,8 +18,8 @@ For the presentation layer, the BLOC library (and pattern) has been chosen, in p
 - Widget tests: `test/screens/my_workouts/my_workouts_screen_test.dart`
 - Integration tests: `integration_test/add_workout_test.dart`
 
-
-future improvements:
-- named routes (web)
-- Localisation
-- reorder sets
+## Possible improvements
+- Eliminate hard coded strings and implement proper localisation, for example using the flutter_localizations library
+- Implement the possibility of reordering sets when editing a workout
+- Implement a better navigation system, maybe by using
+- 
